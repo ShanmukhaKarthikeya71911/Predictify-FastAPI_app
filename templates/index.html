@@ -1653,7 +1653,36 @@
       requestAnimationFrame(tick);
     }
 
-    // Guest history block removed - now handled dynamically in main script block
+    // Load and populate the global prediction log from SQLite
+    async function loadHistory() {
+      const tbody = document.getElementById('historyBody');
+      if (!tbody) return;
+      try {
+        const res = await fetch('/history');
+        const data = await res.json();
+        if (!data.length) {
+          tbody.innerHTML = `<tr><td colspan="5" style="color:var(--mid);padding:2rem 1rem">No predictions yet — run one above.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = data.map(r => {
+          const timeStr = r.created_at ? r.created_at.split('.')[0] : '—';
+          return `
+            <tr>
+              <td>${r.role}</td>
+              <td>${r.location}</td>
+              <td>${r.experience} yrs</td>
+              <td><span class="salary-badge">₹${r.salary} LPA</span></td>
+              <td style="color:var(--mid)">${timeStr}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="5" style="color:var(--warn);padding:2rem 1rem">Failed to load history.</td></tr>`;
+      }
+    }
+
+    // Initialize dashboard and history logs on page load
+    handleAuthChange();
   </script>
 </body>
 

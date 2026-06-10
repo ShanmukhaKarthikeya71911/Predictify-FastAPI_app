@@ -47,11 +47,16 @@ def startup_event():
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "roles": ROLES, "industries": INDUSTRIES,
-        "locations": LOCATIONS, "educations": EDUCATIONS
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={
+            "roles": ROLES,
+            "industries": INDUSTRIES,
+            "locations": LOCATIONS,
+            "educations": EDUCATIONS
+        }
+    )
 
 @app.post("/login", response_class=JSONResponse)
 async def login(data: AuthRequest, db: Session = Depends(get_db)):

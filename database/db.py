@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -33,11 +33,12 @@ Base.metadata.create_all(bind=engine)
 # Migration: check if username column exists in predictions, if not, add it
 try:
     with engine.connect() as conn:
-        conn.execute("SELECT username FROM predictions LIMIT 1")
+        conn.execute(text("SELECT username FROM predictions LIMIT 1"))
 except Exception:
     try:
         with engine.connect() as conn:
-            conn.execute("ALTER TABLE predictions ADD COLUMN username VARCHAR")
+            conn.execute(text("ALTER TABLE predictions ADD COLUMN username VARCHAR"))
+            conn.commit()
     except Exception as e:
         print(f"Migration error (username column): {e}")
 
