@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SalaryIQ — Employment Salary Predictor
 
 ## Stack
@@ -54,3 +55,6 @@ Open: http://localhost:8000
 2. Add user authentication (FastAPI + JWT)
 3. Add more features: company size, certifications, internships
 4. Deploy on Railway / Render / AWS EC2
+=======
+# Predictify-FastAPI_app
+>>>>>>> b2d2c33cc271e40100bc961c700982b65a11826d
